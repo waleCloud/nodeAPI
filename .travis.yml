@@ -10,11 +10,6 @@ cache:
   - node_modules
 script:
   - npm test
-deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
 after_success:
   - sh scripts/docker_push.sh
   - test "$TRAVIS_BRANCH" = "master" && sh scripts/heroku_deploy.sh
