@@ -4,6 +4,12 @@ services:
 language: node_js
 node_js:
   - "10"
+before_install: 
+  # install heroku CLI 
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh 
+  # login to docker registries (dockerhub + heroku) 
+  - echo "$ DOCKER_PASSWORD" | docker login -u "$ DOCKER_USERNAME" --password-stdin 
+  # - echo "$ HEROKU_PASSWORD" | docker login -u "$ HEROKU_USERNAME" --password-stdin registry.heroku.com 
 install: 
   - npm install
 cache:
@@ -11,6 +17,11 @@ cache:
   - node_modules
 script:
   - npm test
-after_success:
-  - sh scripts/docker_push.sh
-  - test "$TRAVIS_BRANCH" = "master" && sh scripts/heroku_deploy.sh
+deploy:
+  provider: script
+  script:
+    sh scripts/docker_push.sh
+
+# after_success:
+#   - sh scripts/docker_push.sh
+#   - test "$TRAVIS_BRANCH" = "master" && sh scripts/heroku_deploy.sh
