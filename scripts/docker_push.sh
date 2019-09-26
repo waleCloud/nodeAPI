@@ -5,6 +5,6 @@ if [ "$TRAVIS_BRANCH" = "master" ]; then
 else
     TAG="$TRAVIS_BRANCH"
 fi
-USER="walecloud"
+USER="walecloud/testapi"
 docker build -f Dockerfile -t $USER:$TAG .
 docker push $USER:$TAG
